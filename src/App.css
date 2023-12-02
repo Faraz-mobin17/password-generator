@@ -1,0 +1,75 @@
+/* * {
+  border: 1px solid red !important;
+} */
+html,
+body {
+  height: 100vh;
+  font-family: "Roboto", sans-serif;
+  color: #f2f2f2;
+}
+@font-face {
+  font-family: myFirstFont;
+  src: url("./assets/fonts/static/JetBrainsMono-Bold.ttf");
+}
+#root {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #18171f;
+}
+
+input[type="checkbox"] {
+  accent-color: #a4ffaf;
+  color: white;
+  font-size: 22px;
+  border: none;
+  outline: none;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-top: 24px;
+  margin-right: 4px;
+  width: 20px;
+  height: 20px;
+}
+
+input[type="range"] {
+  accent-color: #a4ffaf;
+}
+
+label {
+  vertical-align: middle;
+  font-size: 18px;
+  margin-top: 24px;
+  font-family: myFirstFont;
+  cursor: pointer;
+}
+input[type="text"] {
+  color: #e6e5ea;
+  outline: none;
+  width: 540px;
+  height: 80px;
+  flex-shrink: 0;
+  background: var(--Dark-Grey, #24232c);
+  font-family: myFirstFont;
+  font-size: 32px;
+}
+.neon-green {
+  background-color: #a4ffaf !important;
+  color: #24232c;
+  font-family: myFirstFont;
+}
+
+h2 {
+  font-family: myFirstFont;
+  color: var(--Grey, #817d92);
+  font-feature-settings: "clig" off, "liga" off;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.length {
+  color: #a4ffaf;
+  font-family: myFirstFont;
+  font-size: 32px;
+}
