@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useCallback, useEffect, useRef } from "react";
+import ArrowRight from "../assets/images/icon-arrow-right.svg";
 export default function Card() {
   const [length, setLength] = useState(8);
   const [password, setPassword] = useState("");
@@ -114,10 +115,11 @@ export default function Card() {
           <div className="w-full">
             <input
               type="range"
-              min={8}
-              max={15}
+              min="8"
+              max="15"
+              step="1"
               value={length}
-              className="cursor-pointer w-full outline-none"
+              className="cursor-pointer w-full outline-none mt-4"
               id="slider"
               onChange={(e) => setLength(e.target.value)}
             />
@@ -169,16 +171,11 @@ export default function Card() {
         </div>
         <button
           type="button"
-          className="p-2 neon-green mt-4 text-lg"
+          className="p-2 neon-green mt-10 text-lg "
           onClick={generatePassword}
         >
           GENERATE
-          <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
-            <path
-              fill="#24232C"
-              d="m5.106 12 6-6-6-6-1.265 1.265 3.841 3.84H.001v1.79h7.681l-3.841 3.84z"
-            />
-          </svg>
+          {/* <img src={ArrowRight} alt="arrow right" /> */}
         </button>
       </div>
     </div>
