@@ -5,7 +5,7 @@ export default function Card() {
   const [length, setLength] = useState(8);
   const [password, setPassword] = useState("");
   const [numberAllowed, setNumberAllowed] = useState(true);
-  const [uppercaseAllowed, setUpperCaseAllowed] = useState(false);
+  const [uppercaseAllowed, setUpperCaseAllowed] = useState(true);
   const [lowercaseAllowed, setLowerCaseAllowed] = useState(true);
   const [symbolAllowed, setSymbolAllowed] = useState(false);
 
@@ -26,7 +26,7 @@ export default function Card() {
     let uppercaseChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let lowercaseChar = "abcdefghijklmnopqrstuvwxyz";
     let numbers = "1234567890";
-    let symbols = "!@#$%^&*()_";
+    let symbols = "!@#$%^&*()_[]{}:;,.<>/?|";
 
     if (uppercaseAllowed) {
       str += uppercaseChar;
@@ -80,12 +80,7 @@ export default function Card() {
         />
 
         <div
-          style={{
-            width: "fit-content",
-            height: "80px",
-            background: "#24232c",
-          }}
-          className="cursor-pointer flex items-center relative -left-10"
+          className="cursor-pointer flex items-center relative -left-10 w-fit h-[80px] bg-[#24232c]"
           onClick={copyPass}
         >
           <svg width="21" height="24" xmlns="http://www.w3.org/2000/svg">
@@ -96,19 +91,11 @@ export default function Card() {
           </svg>
         </div>
       </div>
-      <div
-        className="flex flex-col shadow  overflow-hidden mb-4 p-10 mt-4"
-        style={{
-          background: "#24232C",
-          width: "540px",
-          height: "528px",
-          flexShrink: "0",
-        }}
-      >
+      <div className="flex flex-col shadow  overflow-hidden mb-4 p-10 mt-4 text-white bg-[#24232C] justify-center">
         <div className="flex items-center flex-col  gap-x-1 ">
           <div className="w-full flex justify-between items-center align-middle">
             <label htmlFor="slider" className="text-white">
-              Character Length:
+              Character Length
             </label>
             <div className="length">{length}</div>
           </div>
@@ -116,26 +103,16 @@ export default function Card() {
             <input
               type="range"
               min="8"
-              max="15"
+              max="20"
               step="1"
               value={length}
-              className="cursor-pointer w-full outline-none mt-4"
+              className="cursor-pointer w-full outline-none mt-4 border-none "
               id="slider"
               onChange={(e) => setLength(e.target.value)}
             />
           </div>
         </div>
-        <div className="flex items-center gap-x-1 mt-2">
-          <input
-            type="checkbox"
-            defaultChecked={numberAllowed}
-            id="numberInput"
-            onChange={() => setNumberAllowed((prev) => !prev)}
-          />
-          <label htmlFor="numberInput" className="text-white">
-            Inlcude Numbers:
-          </label>
-        </div>
+
         <div className="flex items-center gap-x-1 mt-2">
           <input
             type="checkbox"
@@ -144,7 +121,7 @@ export default function Card() {
             onChange={() => setUpperCaseAllowed((prev) => !prev)}
           />
           <label htmlFor="uppercaseAllowed" className="text-white">
-            Include Uppercase letters:
+            Include Uppercase letters
           </label>
         </div>
         <div className="flex items-center gap-x-1 mt-2">
@@ -155,7 +132,18 @@ export default function Card() {
             onChange={() => setLowerCaseAllowed((prev) => !prev)}
           />
           <label htmlFor="lowercaseAllowed" className="text-white">
-            Include Lowercase letters:
+            Include Lowercase letters
+          </label>
+        </div>
+        <div className="flex items-center gap-x-1 mt-2">
+          <input
+            type="checkbox"
+            defaultChecked={numberAllowed}
+            id="numberInput"
+            onChange={() => setNumberAllowed((prev) => !prev)}
+          />
+          <label htmlFor="numberInput" className="text-white">
+            Inlcude Numbers
           </label>
         </div>
         <div className="flex items-center gap-x-2 mt-2">
@@ -166,12 +154,12 @@ export default function Card() {
             onChange={() => setSymbolAllowed((prev) => !prev)}
           />
           <label htmlFor="characterAllowed" className="text-white">
-            Include Symbols:
+            Include Symbols
           </label>
         </div>
         <button
           type="button"
-          className="p-2 neon-green mt-10 text-lg "
+          className="p-4 bg-green mt-10 text-lg  text-[#000] hover:bg-transparent"
           onClick={generatePassword}
         >
           GENERATE
