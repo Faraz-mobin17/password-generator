@@ -10,7 +10,10 @@ function Slider({ id, value, setValue }) {
         <label htmlFor={id} className="text-base sm:text-body">
           {id}
         </label>
-        <span className="text-heading-M sm:text-heading-L text-neon-green">
+        <span
+          className="text-heading-M sm:text-heading-L text-neon-green font-jetbrainsmono
+        "
+        >
           {value}
         </span>
       </div>
