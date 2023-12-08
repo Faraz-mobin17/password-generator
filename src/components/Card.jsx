@@ -1,9 +1,10 @@
 import React from "react";
 import { useState, useCallback, useEffect, useRef } from "react";
-import ArrowRight from "../assets/images/icon-arrow-right";
+
 import CheckBox from "./CheckBox";
 import IconCopy from "../assets/images/icon-copy";
 import Slider from "./Slider";
+import Button from "./Button";
 
 export default function Card() {
   const [length, setLength] = useState(8);
@@ -12,6 +13,8 @@ export default function Card() {
   const [uppercaseAllowed, setUpperCaseAllowed] = useState(true);
   const [lowercaseAllowed, setLowerCaseAllowed] = useState(true);
   const [symbolAllowed, setSymbolAllowed] = useState(false);
+  const [copied, setCopied] = useState(false);
+
   const checkboxes = [
     {
       id: "uppercaseAllowed",
@@ -51,30 +54,30 @@ export default function Card() {
   ]);
 
   function fn() {
-    let str = "";
-    let pass = "";
-    let uppercaseChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let lowercaseChar = "abcdefghijklmnopqrstuvwxyz";
-    let numbers = "1234567890";
-    let symbols = "!@#$%^&*()_[]{}:;,.<>/?|";
+    const characterSets = {
+      uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      lowercase: "abcdefghijklmnopqrstuvwxyz",
+      numbers: "1234567890",
+      symbols: "!@#$%^&*()_[]{}:;,.<>/?|",
+    };
 
-    if (uppercaseAllowed) {
-      str += uppercaseChar;
-    }
-    if (lowercaseAllowed) {
-      str += lowercaseChar;
-    }
-    if (numberAllowed) {
-      str += numbers;
-    }
-    if (symbolAllowed) {
-      str += symbols;
-    }
+    const selectedSets = Object.entries({
+      uppercase: uppercaseAllowed,
+      lowercase: lowercaseAllowed,
+      numbers: numberAllowed,
+      symbols: symbolAllowed,
+    })
+      .filter(([, allowed]) => allowed)
+      .map(([setName]) => characterSets[setName])
+      .join("");
+
+    let password = "";
     for (let i = 1; i <= length; i += 1) {
-      let char = Math.floor(Math.random() * str.length + 1);
-      pass += str.charAt(char);
+      const char = Math.floor(Math.random() * selectedSets.length);
+      password += selectedSets.charAt(char);
     }
-    setPassword(pass);
+
+    setPassword(password);
   }
 
   useEffect(() => {
@@ -91,9 +94,14 @@ export default function Card() {
   const copyPass = useCallback(copyToClip, [password]);
   function copyToClip() {
     passwordRef.current?.select();
-    window.navigator.clipboard.writeText(password);
-  }
 
+    window.navigator.clipboard.writeText(password).then(() => {
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 1000); // Set timeout for 1 second (1000 milliseconds)
+    });
+  }
   return (
     <div>
       <h2 className="text-center mb-4 text-2xl">Password Generator</h2>
@@ -113,6 +121,9 @@ export default function Card() {
           className="cursor-pointer flex items-center relative -left-10 w-fit h-[80px] bg-[#24232c]"
           onClick={copyPass}
         >
+          <span className="text-neon-green font-jetbrainsmono text-[18px] pr-4">
+            {copied ? "copied!" : ""}
+          </span>
           <IconCopy />
         </div>
       </div>
@@ -127,14 +138,7 @@ export default function Card() {
             label={label}
           />
         ))}
-        <button
-          type="button"
-          className=" bg-neon-green text-dark-grey text-base sm:text-body  py-[1.125rem] sm:py-5 w-full flex justify-center items-center gap-4 border-2 box-border border-dark-grey hover:bg-dark-grey hover:text-neon-green hover:border-neon-green mt-[32px]"
-          onClick={generatePassword}
-        >
-          <span>GENERATE</span>
-          <ArrowRight className="text-inherit" />
-        </button>
+        <Button generatePassword={generatePassword} />
       </div>
     </div>
   );
