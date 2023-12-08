@@ -1,6 +1,10 @@
 import React from "react";
 import { useState, useCallback, useEffect, useRef } from "react";
-import ArrowRight from "../assets/images/icon-arrow-right.svg";
+import ArrowRight from "../assets/images/icon-arrow-right";
+import CheckBox from "./CheckBox";
+import IconCopy from "../assets/images/icon-copy";
+import Slider from "./Slider";
+
 export default function Card() {
   const [length, setLength] = useState(8);
   const [password, setPassword] = useState("");
@@ -8,6 +12,32 @@ export default function Card() {
   const [uppercaseAllowed, setUpperCaseAllowed] = useState(true);
   const [lowercaseAllowed, setLowerCaseAllowed] = useState(true);
   const [symbolAllowed, setSymbolAllowed] = useState(false);
+  const checkboxes = [
+    {
+      id: "uppercaseAllowed",
+      checked: uppercaseAllowed,
+      setValue: setUpperCaseAllowed,
+      label: "Include Uppercase Allowed",
+    },
+    {
+      id: "lowercaseAllowed",
+      checked: lowercaseAllowed,
+      setValue: setLowerCaseAllowed,
+      label: "Include Lowercase Allowed",
+    },
+    {
+      id: "numberAllowed",
+      checked: numberAllowed,
+      setValue: setNumberAllowed,
+      label: "Include Number Allowed",
+    },
+    {
+      id: "symbolAllowed",
+      checked: symbolAllowed,
+      setValue: setSymbolAllowed,
+      label: "Include Symbol Allowed",
+    },
+  ];
 
   const passwordRef = useRef(null);
 
@@ -83,87 +113,27 @@ export default function Card() {
           className="cursor-pointer flex items-center relative -left-10 w-fit h-[80px] bg-[#24232c]"
           onClick={copyPass}
         >
-          <svg width="21" height="24" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M20.341 3.091 17.909.659A2.25 2.25 0 0 0 16.319 0H8.25A2.25 2.25 0 0 0 6 2.25V4.5H2.25A2.25 2.25 0 0 0 0 6.75v15A2.25 2.25 0 0 0 2.25 24h10.5A2.25 2.25 0 0 0 15 21.75V19.5h3.75A2.25 2.25 0 0 0 21 17.25V4.682a2.25 2.25 0 0 0-.659-1.591ZM12.469 21.75H2.53a.281.281 0 0 1-.281-.281V7.03a.281.281 0 0 1 .281-.281H6v10.5a2.25 2.25 0 0 0 2.25 2.25h4.5v1.969a.282.282 0 0 1-.281.281Zm6-4.5H8.53a.281.281 0 0 1-.281-.281V2.53a.281.281 0 0 1 .281-.281H13.5v4.125c0 .621.504 1.125 1.125 1.125h4.125v9.469a.282.282 0 0 1-.281.281Zm.281-12h-3v-3h.451c.075 0 .147.03.2.082L18.667 4.6a.283.283 0 0 1 .082.199v.451Z"
-              fill="#A4FFAF"
-            />
-          </svg>
+          <IconCopy />
         </div>
       </div>
       <div className="flex flex-col shadow  overflow-hidden mb-4 p-10 mt-4 text-white bg-[#24232C] justify-center">
-        <div className="flex items-center flex-col  gap-x-1 ">
-          <div className="w-full flex justify-between items-center align-middle">
-            <label htmlFor="slider" className="text-white">
-              Character Length
-            </label>
-            <div className="length">{length}</div>
-          </div>
-          <div className="w-full">
-            <input
-              type="range"
-              min="8"
-              max="20"
-              step="1"
-              value={length}
-              className="cursor-pointer w-full outline-none mt-4 border-none "
-              id="slider"
-              onChange={(e) => setLength(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-x-1 mt-2">
-          <input
-            type="checkbox"
-            defaultChecked={uppercaseAllowed}
-            id="uppercaseAllowed"
-            onChange={() => setUpperCaseAllowed((prev) => !prev)}
+        <Slider id="Character Length" value={length} setValue={setLength} />
+        {checkboxes.map(({ id, checked, setValue, label }) => (
+          <CheckBox
+            key={id}
+            id={id}
+            checked={checked}
+            setValue={setValue}
+            label={label}
           />
-          <label htmlFor="uppercaseAllowed" className="text-white">
-            Include Uppercase letters
-          </label>
-        </div>
-        <div className="flex items-center gap-x-1 mt-2">
-          <input
-            type="checkbox"
-            defaultChecked={lowercaseAllowed}
-            id="lowercaseAllowed"
-            onChange={() => setLowerCaseAllowed((prev) => !prev)}
-          />
-          <label htmlFor="lowercaseAllowed" className="text-white">
-            Include Lowercase letters
-          </label>
-        </div>
-        <div className="flex items-center gap-x-1 mt-2">
-          <input
-            type="checkbox"
-            defaultChecked={numberAllowed}
-            id="numberInput"
-            onChange={() => setNumberAllowed((prev) => !prev)}
-          />
-          <label htmlFor="numberInput" className="text-white">
-            Inlcude Numbers
-          </label>
-        </div>
-        <div className="flex items-center gap-x-2 mt-2">
-          <input
-            type="checkbox"
-            defaultChecked={symbolAllowed}
-            id="characterAllowed"
-            onChange={() => setSymbolAllowed((prev) => !prev)}
-          />
-          <label htmlFor="characterAllowed" className="text-white">
-            Include Symbols
-          </label>
-        </div>
+        ))}
         <button
           type="button"
-          className="p-4 bg-green mt-10 text-lg  text-[#000] hover:bg-transparent"
+          className=" bg-neon-green text-dark-grey text-base sm:text-body  py-[1.125rem] sm:py-5 w-full flex justify-center items-center gap-4 border-2 box-border border-dark-grey hover:bg-dark-grey hover:text-neon-green hover:border-neon-green mt-[32px]"
           onClick={generatePassword}
         >
-          GENERATE
-          {/* <img src={ArrowRight} alt="arrow right" /> */}
+          <span>GENERATE</span>
+          <ArrowRight className="text-inherit" />
         </button>
       </div>
     </div>
