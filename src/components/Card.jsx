@@ -1,3 +1,4 @@
+// React and necessary components are imported from their respective modules
 import React from "react";
 import { useState, useCallback, useEffect, useRef } from "react";
 
@@ -6,7 +7,9 @@ import IconCopy from "../assets/images/icon-copy";
 import Slider from "./Slider";
 import Button from "./Button";
 
+// Functional component for a password generator card
 export default function Card() {
+  // State variables for controlling various aspects of the password generation
   const [length, setLength] = useState(8);
   const [password, setPassword] = useState("");
   const [numberAllowed, setNumberAllowed] = useState(true);
@@ -15,25 +18,30 @@ export default function Card() {
   const [symbolAllowed, setSymbolAllowed] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // Array of checkbox configurations for different character sets
   const checkboxes = [
+    // Configuration for Uppercase checkbox
     {
       id: "uppercaseAllowed",
       checked: uppercaseAllowed,
       setValue: setUpperCaseAllowed,
       label: "Include Uppercase Allowed",
     },
+    // Configuration for Lowercase checkbox
     {
       id: "lowercaseAllowed",
       checked: lowercaseAllowed,
       setValue: setLowerCaseAllowed,
       label: "Include Lowercase Allowed",
     },
+    // Configuration for Numbers checkbox
     {
       id: "numberAllowed",
       checked: numberAllowed,
       setValue: setNumberAllowed,
       label: "Include Number Allowed",
     },
+    // Configuration for Symbols checkbox
     {
       id: "symbolAllowed",
       checked: symbolAllowed,
@@ -42,8 +50,10 @@ export default function Card() {
     },
   ];
 
+  // Ref for the password input field
   const passwordRef = useRef(null);
 
+  // Callback function to generate a password based on current settings
   const generatePassword = useCallback(fn, [
     length,
     numberAllowed,
@@ -53,6 +63,7 @@ export default function Card() {
     setPassword,
   ]);
 
+  // Actual password generation logic
   function fn() {
     const characterSets = {
       uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -77,9 +88,11 @@ export default function Card() {
       password += selectedSets.charAt(char);
     }
 
+    // Set the generated password to the state
     setPassword(password);
   }
 
+  // Effect to generate a password whenever relevant state variables change
   useEffect(() => {
     generatePassword();
   }, [
@@ -91,21 +104,27 @@ export default function Card() {
     generatePassword,
   ]);
 
+  // Callback function to copy the generated password to the clipboard
   const copyPass = useCallback(copyToClip, [password]);
   function copyToClip() {
     passwordRef.current?.select();
 
+    // Using Clipboard API to copy the password to the clipboard
     window.navigator.clipboard.writeText(password).then(() => {
+      // Set copied state to true and reset it after 1 second
       setCopied(true);
       setTimeout(() => {
         setCopied(false);
       }, 1000); // Set timeout for 1 second (1000 milliseconds)
     });
   }
+
+  // JSX structure for the password generator card
   return (
     <div>
       <h2 className="text-center mb-4 text-2xl">Password Generator</h2>
       <div className="flex justify-center items-center">
+        {/* Input field for displaying the generated password */}
         <input
           type="text"
           name="text"
@@ -117,6 +136,7 @@ export default function Card() {
           ref={passwordRef}
         />
 
+        {/* Copy button for copying the generated password to the clipboard */}
         <div
           className="cursor-pointer flex items-center relative -left-10 w-fit h-[80px] bg-[#24232c]"
           onClick={copyPass}
@@ -127,8 +147,11 @@ export default function Card() {
           <IconCopy />
         </div>
       </div>
-      <div className="flex flex-col shadow  overflow-hidden mb-4 p-10 mt-4 text-white bg-[#24232C] justify-center">
+
+      {/* Configuration settings for the password generator */}
+      <div className="flex flex-col shadow overflow-hidden mb-4 p-10 mt-4 text-white bg-[#24232C] justify-center">
         <Slider id="Character Length" value={length} setValue={setLength} />
+        {/* Render checkboxes based on the configurations */}
         {checkboxes.map(({ id, checked, setValue, label }) => (
           <CheckBox
             key={id}
@@ -138,6 +161,7 @@ export default function Card() {
             label={label}
           />
         ))}
+        {/* Button to manually trigger password generation */}
         <Button generatePassword={generatePassword} />
       </div>
     </div>
