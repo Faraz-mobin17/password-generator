@@ -123,7 +123,7 @@ export default function Card() {
   return (
     <div>
       <h2 className="text-center mb-4 text-2xl">Password Generator</h2>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center max-w-full">
         {/* Input field for displaying the generated password */}
         <input
           type="text"
@@ -132,19 +132,23 @@ export default function Card() {
           placeholder="Px3st$jzk@"
           readOnly
           value={password}
-          className="text-black bg-transparent p-3"
+          className="text-black bg-transparent p-3 inputField"
           ref={passwordRef}
         />
 
         {/* Copy button for copying the generated password to the clipboard */}
         <div
-          className="cursor-pointer flex items-center relative -left-10 w-fit h-[80px] bg-[#24232c]"
+          className="cursor-pointer flex items-center relative w-fit  bg-[#24232c] sm:p-4"
           onClick={copyPass}
+          style={{ marginLeft: "-60px" }}
         >
-          <span className="text-neon-green font-jetbrainsmono text-[18px] pr-4">
+          <span
+            className="text-neon-green font-jetbrainsmono text-[18px] pr-4 "
+            style={{ marginLeft: "-10px" }}
+          >
             {copied ? "copied!" : ""}
           </span>
-          <IconCopy />
+          <IconCopy className="z-10" />
         </div>
       </div>
 
