@@ -1,7 +1,9 @@
 // React and necessary components are imported from their respective modules
 import React from "react";
 import { useState, useCallback, useEffect, useRef } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
+import "react-toastify/dist/ReactToastify.css";
 import CheckBox from "./CheckBox";
 import IconCopy from "../assets/images/icon-copy";
 import Slider from "./Slider";
@@ -9,10 +11,21 @@ import Button from "./Button";
 
 // Functional component for a password generator card
 export default function Card() {
+  const notify = () =>
+    toast.error("☹️!Oops no text to copy", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "dark",
+    });
   // State variables for controlling various aspects of the password generation
-  const [length, setLength] = useState(8);
+  const [length, setLength] = useState(0);
   const [password, setPassword] = useState("");
-  const [numberAllowed, setNumberAllowed] = useState(true);
+  const [numberAllowed, setNumberAllowed] = useState(false);
   const [uppercaseAllowed, setUpperCaseAllowed] = useState(true);
   const [lowercaseAllowed, setLowerCaseAllowed] = useState(true);
   const [symbolAllowed, setSymbolAllowed] = useState(false);
@@ -110,13 +123,21 @@ export default function Card() {
     passwordRef.current?.select();
 
     // Using Clipboard API to copy the password to the clipboard
-    window.navigator.clipboard.writeText(password).then(() => {
-      // Set copied state to true and reset it after 1 second
-      setCopied(true);
-      setTimeout(() => {
-        setCopied(false);
-      }, 1000); // Set timeout for 1 second (1000 milliseconds)
-    });
+    window.navigator.clipboard
+      .writeText(password)
+      .then(() => {
+        // Set copied state to true and reset it after 1 second
+        if (password === undefined || password === "") {
+          setCopied(false);
+          notify();
+          return;
+        }
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        }, 1000); // Set timeout for 1 second (1000 milliseconds)
+      })
+      .catch((err) => console.log("error", err));
   }
 
   // JSX structure for the password generator card
@@ -143,10 +164,10 @@ export default function Card() {
           style={{ marginLeft: "-60px" }}
         >
           <span
-            className="text-neon-green font-jetbrainsmono text-[18px] pr-4 "
-            style={{ marginLeft: "-10px" }}
+            className="text-neon-green font-jetbrainsmono text-[18px] pr-4 z-10 absolute font-bold"
+            style={{ marginLeft: "-80px" }}
           >
-            {copied ? "copied!" : ""}
+            {copied ? "copied!" : <ToastContainer />}
           </span>
           <IconCopy className="z-10" />
         </div>
